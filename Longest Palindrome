@@ -1,0 +1,31 @@
+class Solution(object):
+    def longestPalindrome(self, s):
+        """
+        :type s: str
+        :rtype: int
+        """
+        char_count = {}
+        for char in s:
+            if char in char_count:
+                char_count[char] += 1
+            else:
+                char_count[char] = 1
+    
+    # Initialize the length of the longest palindrome
+        length = 0
+        odd_found = False
+    
+    # Iterate over the frequency counts
+        for count in char_count.values():
+            if count % 2 == 0:
+                length += count  # Even count can fully contribute to the palindrome
+            else:
+                length += count - 1  # Odd count can contribute count - 1 to make it even
+                odd_found = True  # Note that we have found at least one odd count
+    
+    # If there's an odd count, we can place one odd character in the middle
+        if odd_found:
+            length += 1
+    
+        return length
+        
