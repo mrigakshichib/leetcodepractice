@@ -1,0 +1,36 @@
+from collections import Counter
+import heapq
+class Solution(object):
+    def isNStraightHand(self, hand, groupSize):
+        """
+        :type hand: List[int]
+        :type groupSize: int
+        :rtype: bool
+        """
+        if len(hand) % groupSize != 0:
+            return False
+        
+        # Count the occurrences of each card
+        card_count = Counter(hand)
+        
+        # Use a min-heap to process cards in ascending order
+        min_heap = list(card_count.keys())
+        heapq.heapify(min_heap)
+        
+        # Process the cards
+        while min_heap:
+            first_card = min_heap[0]  # Get the smallest card
+            # Try to form a group starting from the smallest card
+            for i in range(groupSize):
+                current_card = first_card + i
+                if card_count[current_card] == 0:
+                    return False
+                card_count[current_card] -= 1
+                if card_count[current_card] == 0:
+                    if current_card != min_heap[0]:
+                        return False
+                    heapq.heappop(min_heap)
+        
+        return True
+
+        
